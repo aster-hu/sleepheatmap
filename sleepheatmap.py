@@ -37,7 +37,7 @@ sleep_df['hour_diff'] = sleep_df['min_diff']/ 60
 sleep_df = sleep_df.set_index('sleepdate')
 
 # preview data
-sleep_df.head(2)
+sleep_df.head()
 
 # test if DatetimeIndex
 isinstance(sleep_df.index, pd.DatetimeIndex)
@@ -48,8 +48,8 @@ sleeptime.head()
 
 # calendar heatmap
 plt.figure(figsize=(16,8))
-calmap.yearplot(data=sleeptime, year=2021);
-plt.suptitle('Calendar Heatmap', y=.65, fontsize=20);
+calmap.yearplot(data=sleeptime, year=2021, cmap='PuRd', daylabels='MTWTFSS');
+plt.suptitle('Sleeptime Heatmap', y=.65, fontsize=20);
 
 ###########
 # # CALENDAR HEATMAP FOR SEVERAL YEARS
