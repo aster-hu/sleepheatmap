@@ -6,7 +6,7 @@ from vega_datasets import data as vds
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
-
+import matplotlib as matplotlib
 # # BASIC EXAMPLE
 # # data argument for plot is pandas series and must be indexed by a DatetimeIndex
 # # define date range: start and end date
@@ -47,9 +47,9 @@ sleeptime = pd.Series(sleep_df.hour_diff)
 sleeptime.head()
 
 # calendar heatmap
-plt.figure(figsize=(16,8))
+plt.figure(figsize=(16,8), facecolor='white')
 calmap.yearplot(data=sleeptime, year=2021, cmap='PuRd', daylabels='MTWTFSS');
-plt.suptitle('Sleeptime Heatmap', y=.65, fontsize=20);
+plt.suptitle('Sleeptime Heatmap', y=.65, fontsize=20, color='black');
 
 ###########
 # # CALENDAR HEATMAP FOR SEVERAL YEARS
