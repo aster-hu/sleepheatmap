@@ -1,84 +1,42 @@
-import calmap
-import calplot
-import pandas as pd
-import calmap
-from vega_datasets import data as vds
-import matplotlib.pyplot as plt
+from datetime import timedelta
 import numpy as np
-from datetime import datetime
-import matplotlib as matplotlib
-# # BASIC EXAMPLE
-# # data argument for plot is pandas series and must be indexed by a DatetimeIndex
-# # define date range: start and end date
-# heatmap_series = pd.Series(data=np.random.rand(104), 
-#                            index=pd.date_range(start='6-6-21', end='09-17-21'))
-# heatmap_series.head()
+import pandas as pd
+import matplotlib.pyplot as plt
+import july
+from july.utils import date_range
+from cmap_custom import cmap_sb_custom
 
-# # calendar heatmap
-# calmap.yearplot(data=heatmap_series);
+# dates = date_range("2020-01-01", "2020-12-31")
+# data = np.random.randint(0, 14, len(dates))
 
-# # calendar heatmap
-# calmap.yearplot(data=heatmap_series);
+sleep_df = pd.read_csv('_data/sleeptime.csv')
 
-# CALENDAR HEATMAP FOR ONE YEAR
-# data
-sleep_df = pd.read_csv('data/sleeptime.csv')
+# convert date to datetime
+sleep_df['sleepdatetime'] = pd.to_datetime(sleep_df['Date'] + ' ' + sleep_df['Sleep_time'], format="%Y-%m-%d %H:%M")
 
-# convert date to datetime if needed
-sleep_df['sleepdatetime'] = pd.to_datetime(sleep_df['Date'] + ' ' + sleep_df['Sleep_time'], format="%Y-%m-%d %I:%M")
-sleep_df['sleepdate'] = pd.to_datetime(sleep_df['Date'], format="%Y-%m-%d")
-sleep_df['target'] = pd.to_datetime(sleep_df['Date'] + ' ' + '00:00:00')
+# add conditional column
+sleep_df['sleepdate'] = sleep_df.sleepdatetime + timedelta(days = 1)
+sleep_df.loc[sleep_df.sleepdatetime.dt.hour>7, 'sleepdate'] = sleep_df.sleepdatetime
 
-sleep_df['min_diff'] = (sleep_df['sleepdatetime'] - sleep_df['target']).astype('timedelta64[m]')
-# Divide difference in minutes to hours
+# set sleep target time, e.g. 00:30:00
+sleep_df['target'] = pd.to_datetime(sleep_df['Date'] + ' ' + '00:30:00') + timedelta(days = 1)
+
+sleep_df['min_diff'] = (sleep_df['sleepdate'] - sleep_df['target']).astype('timedelta64[m]')
+
+# divide difference in minutes to hours
 sleep_df['hour_diff'] = sleep_df['min_diff']/ 60
-
-# set index to date
-sleep_df = sleep_df.set_index('sleepdate')
 
 # preview data
 sleep_df.head()
 
-# test if DatetimeIndex
-isinstance(sleep_df.index, pd.DatetimeIndex)
+# dates = date_range("2021-01-01", "2020-12-31")
+dates = pd.to_datetime(sleep_df['Date'])
 
 # data argument for plot is pandas series and must be indexed by a DatetimeIndex
 sleeptime = pd.Series(sleep_df.hour_diff)
 sleeptime.head()
 
-# calendar heatmap
-plt.figure(figsize=(16,8), facecolor='white')
-calmap.yearplot(data=sleeptime, year=2021, cmap='PuRd', daylabels='MTWTFSS');
-plt.suptitle('Sleeptime Heatmap', y=.65, fontsize=20, color='black');
-
-###########
-# # CALENDAR HEATMAP FOR SEVERAL YEARS
-# # data argument for plot is pandas series and must be indexed by a DatetimeIndex
-# avg_temp = pd.Series(jacksonville_df.Avg_Temp_Fahrenheit)
-# avg_temp.head()
-
-# # calendar heatmap
-# calmap.calendarplot(data=avg_temp, fig_kws=dict(figsize=(16,8)));
-
-
-# # example using calplot
-
-# # calendar heatmap
-# # notice the colorbar is added automatically
-# calplot.calplot(data=avg_temp, cmap='Reds', figsize=(16,8));
-# plt.suptitle('Calendar Heatmap', y=1.0, fontsize=20);
-
-
-# # EXTRA EXAMPLE WITH CALPLOT
-# # example uses resample to put data in proper form
-
-# # temperatures in San Francisco
-# # data argument for plot is pandas series and must be indexed by a DatetimeIndex
-# sf_temps = vds.sf_temps()
-# sf_temps = sf_temps.set_index('date')
-# # temp resample data by day
-# temps = pd.Series(sf_temps.resample('D').max().temp)
-# temps.head()
-
-# # calendar heatmap
-# calplot.calplot(data=temps, cmap='coolwarm', suptitle='Calendar Heatmap');
+plt.figure(facecolor='white')
+ax = july.heatmap(dates, sleeptime, year_label=False, month_grid=True, cmap=cmap_sb_custom, cmin=-2, cmax=4)
+plt.suptitle('Sleeptime Heatmap', y=0.95, fontsize=20)
+plt.savefig('heatmap.jpg', bbox_inches='tight', pad_inches=0.4, dpi=300)
