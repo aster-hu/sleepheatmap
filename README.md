@@ -1,16 +1,25 @@
-# Sleep Heatmap
+# Sleep Time Heatmap
 
-Sleep time heatmap.
+A sleep time heatmap that shows how daily sleep time differs from sleep target in a monthly calendar view.
+
+![demo](Sample/heatmap_demo.png)
 ## Requirement
 
-- Package: July(previous version: Calmap), Matplotlib, Seaborn, Pandas, Numpy
-- Log sleep time weekly for data input
-- Determine threshold and diverging the palette
+Below Python libraries are required to run the script:
+
+- July
+- Matplotlib
+- Seaborn
+- Pandas
+
+## How it works
+
+Sleep time data is logged manually in a csv file which stored on local. A shell script runs every Monday at 5am to update the heatmap and push changes to git repository.
+
+- Sleep time data is logged via csv file
+- Set sleep time target to track sleep status
 - Customized colour scheme from Seaborn
 
-## (Todo) Automate workflow
+## Backlogs
 
-- Manually log data weekly
-- Crontab to run python file
-- Push changes to *sleepheatmap* repo
-- Update date in */sleep/sleepmap.md* on blog repo
+- [ ] Auto Update the updated date in */sleep/sleepmap.md* on blog repository
