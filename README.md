@@ -22,4 +22,4 @@ Sleep time data is logged manually in a csv file which stored on local. A shell 
 
 ## Backlogs
 
-- [x] Auto Update the updated date in */sleep/sleepmap.md* on blog repository
+- [x] Auto Update the updated date in */sleep/sleepmap.md* on blog repository 
