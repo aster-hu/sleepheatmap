@@ -15,6 +15,9 @@ sleep_df['sleepdatetime'] = pd.to_datetime(sleep_df['Date'] + ' ' + sleep_df['Sl
 sleep_df['sleepdate'] = sleep_df.sleepdatetime + timedelta(days = 1)
 sleep_df.loc[sleep_df.sleepdatetime.dt.hour > 7, 'sleepdate'] = sleep_df.sleepdatetime
 
+# filter for recent 6 months
+sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.DateOffset(months=6)]
+
 ## CUSTOM FIELD ##
 # set sleep target time, e.g. 00:30:00
 sleep_df['target'] = pd.to_datetime(sleep_df['Date'] + ' ' + '00:30:00') + timedelta(days = 1)
