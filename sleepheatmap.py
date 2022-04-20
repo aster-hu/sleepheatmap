@@ -16,14 +16,11 @@ sleep_df['sleepdate'] = sleep_df.sleepdatetime + timedelta(days = 1)
 sleep_df.loc[sleep_df.sleepdatetime.dt.hour > 7, 'sleepdate'] = sleep_df.sleepdatetime
 
 # filter for recent 6 months
-# sleep_df_filter = sleep_df[sleep_df.sleepdate > pd.Timestamp.now().month - pd.DateOffset(months=6)]
-# sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(6) + pd.DateOffset(1)]
-
 sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(6)]
 
 ## CUSTOM FIELD ##
 # set sleep target time, e.g. 00:30:00
-sleep_df['target'] = pd.to_datetime(sleep_df['Date'] + ' ' + '00:30:00') + timedelta(days = 1)
+sleep_df['target'] = pd.to_datetime(sleep_df['Date'] + ' ' + '00:45:00') + timedelta(days = 1)
 
 # calculate the gap between target and actual sleep time
 sleep_df['min_diff'] = (sleep_df['sleepdate'] - sleep_df['target']).astype('timedelta64[m]')
