@@ -45,5 +45,5 @@ sleeptime.head()
 fig = plt.figure(facecolor='white')
 # july argument: show monthly grid, use custom cmap, threshold: -2 < gap < 4
 ax = july.heatmap(dates, sleeptime, year_label=False, month_grid=True, cmap=cmap_sb_custom, cmin=-2, cmax=4)
-plt.suptitle('Sleep Time Heatmap', y=0.75, fontsize=20, fontweight='bold')
+plt.suptitle('Sleep Time Heatmap', y=0.75, fontsize=20, fontweight='bold') # change Y to 0.95 if the data is for 6 months
 plt.savefig('heatmap.png', facecolor=fig.get_facecolor(),edgecolor='none', bbox_inches='tight', pad_inches=0.4, dpi=300)
