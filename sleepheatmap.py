@@ -17,10 +17,10 @@ sleep_df.loc[sleep_df.sleepdatetime.dt.hour > 7, 'sleepdate'] = sleep_df.sleepda
 
 # filter from the beginning of the year to now
 month_number = pd.Timestamp.now().month
-sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(month_number)]
+# sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(month_number)]
 
 # filter for recent 6 months (option 2)
-# sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(6)]
+sleep_df = sleep_df[sleep_df.sleepdate > pd.Timestamp.now() - pd.offsets.MonthBegin(6)]
 
 ## CUSTOM FIELD ##
 # set sleep target time, e.g. 00:30:00
@@ -45,6 +45,6 @@ sleeptime.head()
 fig = plt.figure(facecolor='white')
 # july argument: show monthly grid, use custom cmap, threshold: -2 < gap < 4
 ax = july.heatmap(dates, sleeptime, year_label=False, month_grid=True, cmap=cmap_sb_custom, cmin=-2, cmax=4)
-# change Y to 0.95 if the data is for 6 months
-plt.suptitle('Sleep Time Heatmap', y=0.75, fontsize=20, fontweight='bold') 
+# set Y = 0.75 if the data is for 12 months (option 1); set Y to 0.9 if the data is for 6 months (option 2)
+plt.suptitle('Sleep Time Heatmap', y=0.9, fontsize=20, fontweight='bold') 
 plt.savefig('heatmap.png', facecolor=fig.get_facecolor(),edgecolor='none', bbox_inches='tight', pad_inches=0.4, dpi=300)
